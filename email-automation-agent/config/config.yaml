@@ -1,0 +1,54 @@
+# Email Automation Agent Configuration
+
+# Email Provider Settings
+email:
+  provider: "gmail"  # gmail, outlook, imap
+  imap_server: "imap.gmail.com"
+  imap_port: 993
+  smtp_server: "smtp.gmail.com"
+  smtp_port: 587
+  username: ""  # Your email address
+  password: ""  # App password or OAuth token
+  use_ssl: true
+
+# AI Model Settings
+ai:
+  provider: "openai"  # openai, anthropic, local
+  model: "gpt-3.5-turbo"
+  api_key: ""  # Set via environment variable
+  max_tokens: 1000
+  temperature: 0.7
+
+# Agent Behavior
+agent:
+  check_interval: 300  # seconds
+  max_emails_per_batch: 10
+  auto_reply: false
+  require_confirmation: true
+
+# Email Processing Rules
+rules:
+  - name: "urgent_emails"
+    conditions:
+      subject_contains: ["urgent", "asap", "emergency"]
+      from_domain: ["company.com"]
+    actions:
+      - type: "notify"
+        priority: "high"
+      - type: "forward"
+        to: "manager@company.com"
+  
+  - name: "newsletter_auto_archive"
+    conditions:
+      from_contains: ["newsletter", "noreply"]
+      subject_contains: ["unsubscribe"]
+    actions:
+      - type: "archive"
+      - type: "mark_read"
+
+# Logging
+logging:
+  level: "INFO"
+  file: "logs/agent.log"
+  max_size: "10MB"
+  backup_count: 5
